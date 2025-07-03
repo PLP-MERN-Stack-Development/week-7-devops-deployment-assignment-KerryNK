@@ -1,78 +1,33 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=19889225&assignment_repo_type=AssignmentRepo)
-# Deployment and DevOps for MERN Applications
+# MongoDB Production Setup & Environment Variables
 
-This assignment focuses on deploying a full MERN stack application to production, implementing CI/CD pipelines, and setting up monitoring for your application.
+## MongoDB Atlas Production Best Practices
 
-## Assignment Overview
+- Managed Database:The app uses [MongoDB Atlas](https://www.mongodb.com/atlas) for secure, scalable, and reliable cloud database hosting.
+- Replica Set: The Atlas cluster is configured with at least a 3-node replica set for high availability and fault tolerance.
+- User Permissions: Database users are created with the minimum privileges required (using Role-Based Access Control).
+- IP Whitelisting: Only trusted backend servers and CI/CD runners are allowed to connect via Atlas IP Access List.
+- Connection Pooling: Mongoose (or native MongoDB driver) is configured to use connection pooling for efficient resource usage.
+- Backups: Continuous backups are enabled in Atlas, and restore procedures are tested regularly.
 
-You will:
-1. Prepare your MERN application for production deployment
-2. Deploy the backend to a cloud platform
-3. Deploy the frontend to a static hosting service
-4. Set up CI/CD pipelines with GitHub Actions
-5. Implement monitoring and maintenance strategies
+### Environment Variable Configuration
 
-## Getting Started
+- Sensitive Data: All secrets (like the MongoDB URI) are stored in environment variables, never hardcoded.
+- Local Development: Use a `.env` file (not committed to git) with:
+  `
+  MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority
+  `
+- Production: Environment variables are set securely in the cloud provider’s dashboard (Render, Railway, Heroku, etc.), not in code or `.env` files.
+- Backend Usage Example:
+  `js
+  // Connect to MongoDB using environment variable
+  const mongoose = require('mongoose');
+  mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
+  `
+- Multiple Environments: Separate variables are used for development, staging, and production.
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Follow the setup instructions in the `Week7-Assignment.md` file
-4. Use the provided templates and configuration files as a starting point
-
-## Files Included
-
-- `Week7-Assignment.md`: Detailed assignment instructions
-- `.github/workflows/`: GitHub Actions workflow templates
-- `deployment/`: Deployment configuration files and scripts
-- `.env.example`: Example environment variable templates
-- `monitoring/`: Monitoring configuration examples
-
-## Requirements
-
-- A completed MERN stack application from previous weeks
-- Accounts on the following services:
-  - GitHub
-  - MongoDB Atlas
-  - Render, Railway, or Heroku (for backend)
-  - Vercel, Netlify, or GitHub Pages (for frontend)
-- Basic understanding of CI/CD concepts
-
-## Deployment Platforms
-
-### Backend Deployment Options
-- **Render**: Easy to use, free tier available
-- **Railway**: Developer-friendly, generous free tier
-- **Heroku**: Well-established, extensive documentation
-
-### Frontend Deployment Options
-- **Vercel**: Optimized for React apps, easy integration
-- **Netlify**: Great for static sites, good CI/CD
-- **GitHub Pages**: Free, integrated with GitHub
-
-## CI/CD Pipeline
-
-The assignment includes templates for setting up GitHub Actions workflows:
-- `frontend-ci.yml`: Tests and builds the React application
-- `backend-ci.yml`: Tests the Express.js backend
-- `frontend-cd.yml`: Deploys the frontend to your chosen platform
-- `backend-cd.yml`: Deploys the backend to your chosen platform
-
-## Submission
-
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
-
-1. Complete all deployment tasks
-2. Set up CI/CD pipelines with GitHub Actions
-3. Deploy both frontend and backend to production
-4. Document your deployment process in the README.md
-5. Include screenshots of your CI/CD pipeline in action
-6. Add URLs to your deployed applications
-
-## Resources
-
-- [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [MongoDB Atlas Documentation](https://docs.atlas.mongodb.com/)
-- [Render Documentation](https://render.com/docs)
-- [Railway Documentation](https://docs.railway.app/)
-- [Vercel Documentation](https://vercel.com/docs)
-- [Netlify Documentation](https://docs.netlify.com/) 
+> Tip: See `.env.example` for required environment variables.
