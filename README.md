@@ -1,13 +1,16 @@
-# MongoDB Production Setup & Environment Variables
+# Bug Tracker – Production Deployment & DevOps
 
-## MongoDB Atlas Production Best Practices
+This repository contains a full MERN stack bug tracker application.
+The goal of this assignment is to deploy the app to production, implement CI/CD, configure environment variables securely, and set up monitoring.
 
-- Managed Database:The app uses [MongoDB Atlas](https://www.mongodb.com/atlas) for secure, scalable, and reliable cloud database hosting.
-- Replica Set: The Atlas cluster is configured with at least a 3-node replica set for high availability and fault tolerance.
-- User Permissions: Database users are created with the minimum privileges required (using Role-Based Access Control).
-- IP Whitelisting: Only trusted backend servers and CI/CD runners are allowed to connect via Atlas IP Access List.
-- Connection Pooling: Mongoose (or native MongoDB driver) is configured to use connection pooling for efficient resource usage.
-- Backups: Continuous backups are enabled in Atlas, and restore procedures are tested regularly.
+## MongoDB Production Setup & Environment Variables
+
+- Managed Database: Uses [MongoDB Atlas](https://www.mongodb.com/atlas) for secure, scalable, and reliable cloud database hosting.
+- Replica Set: Atlas cluster with at least a 3-node replica set for high availability.
+- User Permissions: Database users have minimum privileges (RBAC).
+- IP Whitelisting: Only trusted backend servers and CI/CD runners are allowed via Atlas IP Access List.
+- Connection Pooling: Mongoose is configured for efficient resource usage.
+- Backups: Continuous backups enabled and restore procedures tested.
 
 ### Environment Variable Configuration
 
@@ -31,3 +34,24 @@
 - Multiple Environments: Separate variables are used for development, staging, and production.
 
 > Tip: See `.env.example` for required environment variables.
+
+## 🌐 Deployment URLs
+
+- Frontend: [YOUR_FRONTEND_URL_HERE](#)
+- Backend API: [YOUR_BACKEND_URL_HERE](#)
+
+## 🛠️ CI/CD Pipeline Screenshots
+
+_Add screenshots of your GitHub Actions workflows running tests, builds, and deployments._
+
+## 📈 Monitoring Setup
+
+- Health check endpoints implemented.
+- Uptime monitoring configured.
+- Error tracking (e.g., Sentry) integrated.
+- Performance monitoring enabled via hosting provider dashboards.
+
+## 📝 Deployment & Rollback Documentation
+
+- Deployment automated via GitHub Actions.
+- Rollback possible via cloud provider dashboard or redeploying previous commit.
